@@ -9,7 +9,7 @@ on:
       - '[0-9]+\.[0-9]+\.[0-9]+-RC[0-9]+'
 
 env:
-  DOCKERHUB_IMAGE: ${{ github.repository }}
+  DOCKERHUB_IMAGE: ghcr.io/${{ github.repository }}
   IMAGE_TAG: |
     ${{ github.ref_type == 'tag' && format('{0}-{1}', (contains(github.ref_name, '-RC') &&
       'candidate' || 'release'), github.ref_name) || 'latest' }}
@@ -46,11 +46,12 @@ jobs:
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       -
-        name: Login to DockerHub
+        name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PAT }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       -
         name: Build and push
         uses: docker/build-push-action@v6
@@ -101,11 +102,12 @@ jobs:
           images: |
             ${{ env.DOCKERHUB_IMAGE }}
       -
-        name: Login to DockerHub
+        name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PAT }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       -
         name: Create manifest list and push
         working-directory: /tmp/digests
