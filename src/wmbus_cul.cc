@@ -377,7 +377,7 @@ FrameStatus WMBusCUL::checkCULFrame(vector<uchar> &data,
         if (!ok)
         {
             warning("(cul) dll C1 (frame b) crcs failed check! Ignoring telegram!\n");
-            return ErrorInFrame;
+            return FullFrame; //ErrorInFrame;
         }
         debug("(cul) received full C1 frame\n");
         return FullFrame;
