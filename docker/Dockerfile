@@ -1,9 +1,9 @@
 FROM alpine AS build
 RUN apk add --no-cache alpine-sdk gcc linux-headers libxml2-dev libxslt-dev cmake libusb-dev bash samurai
 
-ADD https://api.github.com/repos/wmbusmeters/wmbusmeters/git/refs/heads/master version.json
+ADD https://api.github.com/repos/zugf/wmbusmeters/git/refs/heads/dev version.json
 RUN git clone --depth 1 https://github.com/steve-m/librtlsdr.git && \
-    git clone --depth 1 https://github.com/wmbusmeters/wmbusmeters.git && \
+    git clone --depth 1 --branch dev https://github.com/zugf/wmbusmeters.git && \
     git clone --depth 1 https://github.com/weetmuts/rtl-wmbus.git && \
     git clone --depth 1 https://github.com/merbanan/rtl_433.git && \
     git clone --depth 1 https://github.com/ED6E0F17/rtl_reset.git && \
